@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, Heart, ShoppingCart, Trash2 } from "lucide-react";
@@ -133,10 +134,20 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* Placeholder visual — swap for a real product photo. */}
-        <span className="select-none text-7xl" aria-hidden>
-          {product.emoji}
-        </span>
+        {/* Product photo, with emoji fallback when none is set. */}
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="270px"
+            className="pointer-events-none object-contain p-6"
+          />
+        ) : (
+          <span className="select-none text-7xl" aria-hidden>
+            {product.emoji}
+          </span>
+        )}
 
         {/* Add to cart — slides up on hover, or stays pinned with a cart icon. */}
         <button

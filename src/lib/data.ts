@@ -6,8 +6,10 @@ export type Product = {
   discount?: number;
   rating: number;
   reviews: number;
-  /** Emoji stand-in used until real product photography is dropped in. */
+  /** Emoji stand-in used when no product photo is available. */
   emoji: string;
+  /** Real product photo path under /public; falls back to emoji when absent. */
+  image?: string;
   isNew?: boolean;
   colors?: string[];
   /** Detail-page extras (all optional — sensible defaults applied when absent). */
@@ -67,26 +69,6 @@ export const flashSales: Product[] = [
     rating: 4.5,
     reviews: 99,
     emoji: "🛋️",
-  },
-  {
-    id: "gaming-headset",
-    name: "HyperX Gaming Headset",
-    price: 90,
-    oldPrice: 120,
-    discount: 30,
-    rating: 4.5,
-    reviews: 140,
-    emoji: "🎧",
-  },
-  {
-    id: "gaming-mouse",
-    name: "HAVIT Gaming Mouse",
-    price: 60,
-    oldPrice: 80,
-    discount: 25,
-    rating: 5,
-    reviews: 120,
-    emoji: "🖱️",
   },
 ];
 
@@ -275,6 +257,46 @@ export const justForYou: Product[] = [
     emoji: "⌨️",
   },
 ];
+
+/** Real product photos (under /public), keyed by product id. */
+const productImages: Record<string, string> = {
+  "havit-gamepad": "/products/gamepad.png",
+  "ak-900-keyboard": "/products/keyboard.png",
+  "ips-lcd-monitor": "/products/monitor.png",
+  "s-series-chair": "/products/chair.png",
+  "s-series-chair-2": "/products/chair.png",
+  "north-coat": "/products/coat.svg",
+  "gucci-duffle": "/products/duffle-bag.svg",
+  "rgb-cpu-cooler": "/products/cpu-cooler.svg",
+  "small-bookshelf": "/products/bookshelf.svg",
+  "dog-food": "/products/dog-food.svg",
+  "canon-camera": "/products/camera.svg",
+  "asus-laptop": "/products/laptop.png",
+  "curology-set": "/products/product-set.svg",
+  "kids-car": "/products/car.svg",
+  "soccer-cleats": "/products/cleats.svg",
+  "gp11-gamepad": "/products/gamepad-black.svg",
+  "satin-jacket": "/products/jacket.png",
+  "w-gucci-duffle": "/products/gucci.png",
+  "w-rgb-cooler": "/products/cpu-cooler-2.png",
+  "w-gp11-gamepad": "/products/gp11.png",
+  "w-satin-jacket": "/products/jacket.png",
+  "j-asus-laptop": "/products/laptop.png",
+  "j-ips-monitor": "/products/monitor.png",
+  "j-havit-gamepad": "/products/gamepad.png",
+  "j-ak900-keyboard": "/products/keyboard.png",
+};
+
+// Attach photos to the product objects (shared references across all arrays).
+for (const product of [
+  ...flashSales,
+  ...bestSelling,
+  ...exploreProducts,
+  ...wishlistItems,
+  ...justForYou,
+]) {
+  if (productImages[product.id]) product.image = productImages[product.id];
+}
 
 /** Every product that has its own detail page, deduplicated by id. */
 export const catalog: Product[] = [

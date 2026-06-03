@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   CircleDollarSign,
@@ -61,10 +62,14 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-            <div className="flex min-h-[400px] items-center justify-center overflow-hidden rounded bg-[#eb7aa9] lg:min-h-[470px]">
-              <span className="select-none text-[180px]" aria-hidden>
-                🛍️
-              </span>
+            <div className="relative min-h-[400px] overflow-hidden rounded bg-[#eb7aa9] lg:min-h-[470px]">
+              <Image
+                src="/about/our-story.png"
+                alt="Two women shopping with bags"
+                fill
+                sizes="(min-width: 1024px) 540px, 100vw"
+                className="object-cover"
+              />
             </div>
           </section>
 

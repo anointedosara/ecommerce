@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Heart, Minus, Plus, RotateCcw, Truck } from "lucide-react";
 import type { Product } from "@/lib/data";
@@ -49,18 +50,38 @@ export default function ProductDetails({ product }: { product: Product }) {
               type="button"
               onClick={() => setActiveImage(i)}
               aria-label={`View image ${i + 1}`}
-              className={`flex h-[110px] w-full min-w-[120px] items-center justify-center rounded bg-secondary text-4xl transition-shadow sm:w-[170px] ${
+              className={`relative flex h-[110px] w-full min-w-[120px] items-center justify-center rounded bg-secondary text-4xl transition-shadow sm:w-[170px] ${
                 activeImage === i ? "ring-2 ring-primary" : ""
               }`}
             >
-              <span aria-hidden>{product.emoji}</span>
+              {product.image ? (
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  sizes="170px"
+                  className="object-contain p-4"
+                />
+              ) : (
+                <span aria-hidden>{product.emoji}</span>
+              )}
             </button>
           ))}
         </div>
-        <div className="flex flex-1 items-center justify-center rounded bg-secondary py-16">
-          <span className="select-none text-[160px]" aria-hidden>
-            {product.emoji}
-          </span>
+        <div className="relative flex flex-1 items-center justify-center rounded bg-secondary py-16">
+          {product.image ? (
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={420}
+              height={420}
+              className="max-h-[360px] w-auto object-contain"
+            />
+          ) : (
+            <span className="select-none text-[160px]" aria-hidden>
+              {product.emoji}
+            </span>
+          )}
         </div>
       </div>
 

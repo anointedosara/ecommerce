@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useLanguage } from "@/lib/i18n";
@@ -7,28 +8,29 @@ import { useLanguage } from "@/lib/i18n";
 type ArrivalCardProps = {
   title: string;
   description: string;
-  emoji: string;
+  image: string;
   className?: string;
-  emojiSize?: string;
+  imageClass?: string;
 };
 
 function ArrivalCard({
   title,
   description,
-  emoji,
+  image,
   className = "",
-  emojiSize = "text-[120px]",
+  imageClass = "",
 }: ArrivalCardProps) {
   return (
     <div
       className={`group relative flex items-end overflow-hidden rounded bg-black p-6 text-white sm:p-8 ${className}`}
     >
-      <span
-        className={`pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 select-none opacity-90 ${emojiSize}`}
-        aria-hidden
-      >
-        {emoji}
-      </span>
+      <Image
+        src={image}
+        alt={title}
+        width={520}
+        height={420}
+        className={`pointer-events-none absolute select-none object-contain ${imageClass}`}
+      />
       <div className="z-10 flex flex-col gap-2">
         <h3 className="text-2xl font-semibold">{title}</h3>
         <p className="max-w-[250px] text-sm text-white/80">{description}</p>
@@ -56,29 +58,30 @@ export default function NewArrival() {
         <ArrivalCard
           title="PlayStation 5"
           description="Black and White version of the PS5 coming out on sale."
-          emoji="🎮"
-          emojiSize="text-[200px]"
+          image="/new-arrival/ps5.svg"
+          imageClass="bottom-0 left-1/2 w-[90%] max-w-[510px] -translate-x-1/2"
           className="min-h-[300px] lg:row-span-2 lg:min-h-[600px]"
         />
         <ArrivalCard
           title="Women's Collections"
           description="Featured woman collections that give you another vibe."
-          emoji="👗"
+          image="/new-arrival/women.svg"
+          imageClass="right-0 top-0 h-full w-auto"
           className="min-h-[284px]"
         />
         <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
           <ArrivalCard
             title="Speakers"
             description="Amazon wireless speakers"
-            emoji="🔊"
-            emojiSize="text-[90px]"
+            image="/new-arrival/speakers.svg"
+            imageClass="right-2 top-1/2 h-[80%] w-auto -translate-y-1/2"
             className="min-h-[284px]"
           />
           <ArrivalCard
             title="Perfume"
             description="GUCCI INTENSE OUD EDP"
-            emoji="🧴"
-            emojiSize="text-[90px]"
+            image="/new-arrival/perfume.svg"
+            imageClass="right-2 top-1/2 h-[80%] w-auto -translate-y-1/2"
             className="min-h-[284px]"
           />
         </div>

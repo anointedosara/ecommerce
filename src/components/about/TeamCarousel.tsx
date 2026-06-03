@@ -1,13 +1,14 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import CarouselArrows from "@/components/ui/CarouselArrows";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 
 const team = [
-  { name: "Tom Cruise", role: "Founder & Chairman", emoji: "🧑‍💼" },
-  { name: "Emma Watson", role: "Managing Director", emoji: "👩‍💼" },
-  { name: "Will Smith", role: "Product Designer", emoji: "👨‍💼" },
+  { name: "Tom Cruise", role: "Founder & Chairman", emoji: "🧑‍💼", image: "/about/tom.png" },
+  { name: "Emma Watson", role: "Managing Director", emoji: "👩‍💼", image: "/about/emma.png" },
+  { name: "Will Smith", role: "Product Designer", emoji: "👨‍💼", image: "/about/will.png" },
   { name: "Sophia Chen", role: "Head of Marketing", emoji: "👩‍💻" },
   { name: "James Carter", role: "Lead Engineer", emoji: "👨‍🔧" },
   { name: "Olivia Brown", role: "UX Researcher", emoji: "👩‍🎨" },
@@ -36,10 +37,20 @@ export default function TeamCarousel() {
             key={member.name}
             className="flex w-[280px] shrink-0 flex-col gap-6"
           >
-            <div className="flex h-[340px] items-end justify-center overflow-hidden rounded bg-secondary">
-              <span className="select-none text-[180px]" aria-hidden>
-                {member.emoji}
-              </span>
+            <div className="relative flex h-[340px] items-end justify-center overflow-hidden rounded bg-secondary">
+              {member.image ? (
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  sizes="280px"
+                  className="object-contain object-bottom"
+                />
+              ) : (
+                <span className="select-none text-[180px]" aria-hidden>
+                  {member.emoji}
+                </span>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <h3 className="text-3xl font-medium">{member.name}</h3>

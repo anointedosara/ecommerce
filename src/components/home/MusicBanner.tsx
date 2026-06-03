@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Countdown from "@/components/ui/Countdown";
 
@@ -19,12 +20,16 @@ export default function MusicBanner() {
           </Link>
         </div>
 
-        {/* Product visual placeholder with radial glow */}
+        {/* Product visual with radial glow */}
         <div className="relative flex w-full items-center justify-center lg:w-auto">
           <div className="absolute h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-          <span className="z-10 select-none text-[160px]" aria-hidden>
-            🔊
-          </span>
+          <Image
+            src="/banner/jbl.png"
+            alt="JBL Boombox speaker"
+            width={600}
+            height={360}
+            className="z-10 max-h-[280px] w-auto select-none object-contain"
+          />
         </div>
       </div>
     </section>

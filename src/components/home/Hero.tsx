@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Apple, ArrowRight, ChevronRight } from "lucide-react";
 import { sidebarCategories } from "@/lib/data";
@@ -71,13 +72,15 @@ export default function Hero() {
               </Link>
             </div>
 
-            {/* Product visual placeholder */}
-            <span
-              className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 select-none text-[180px] opacity-90 sm:block"
-              aria-hidden
-            >
-              📱
-            </span>
+            {/* Product visual */}
+            <Image
+              src="/hero/iphone.png"
+              alt="iPhone 14 Series"
+              width={420}
+              height={320}
+              priority
+              className="pointer-events-none absolute right-4 top-1/2 hidden max-h-[80%] w-auto -translate-y-1/2 select-none object-contain sm:block"
+            />
 
             {/* Dots */}
             <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-3">
