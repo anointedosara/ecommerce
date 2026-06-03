@@ -84,19 +84,19 @@ export default function ProductDetails({ product }: { product: Product }) {
             </button>
           ))}
         </div>
-        <div className="relative flex min-h-[500px] flex-1 items-center justify-center rounded bg-secondary p-8 lg:min-h-[600px]">
+        <div className="relative flex flex-1 items-center justify-center rounded bg-secondary p-8">
           {product.image ? (
             <Image
               src={product.image}
               alt={product.name}
-              width={600}
-              height={600}
-              className="max-h-[520px] w-auto object-contain transition-[filter] duration-300"
+              width={510}
+              height={330}
+              className="h-[330px] w-auto max-w-[510px] object-contain transition-[filter] duration-300"
               style={{ filter: activeFilter }}
             />
           ) : (
             <span
-              className="select-none text-[260px]"
+              className="select-none text-[200px]"
               aria-hidden
               style={{ filter: activeFilter }}
             >
