@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import GoogleIcon from "@/components/ui/GoogleIcon";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 import { useStore } from "@/lib/store";
 
 const fields = [
@@ -65,14 +65,7 @@ export default function SignUpForm() {
         >
           Create Account
         </button>
-        <button
-          type="button"
-          onClick={() => setError("Google sign-up isn't available in this demo.")}
-          className="flex items-center justify-center gap-4 rounded border border-black/30 py-4 text-base font-normal text-black transition-colors hover:bg-secondary"
-        >
-          <GoogleIcon size={24} />
-          Sign up with Google
-        </button>
+        <GoogleSignInButton label="Sign up with Google" redirect="/account" />
       </div>
 
       <p className="flex items-center justify-center gap-4 text-base text-black/70">

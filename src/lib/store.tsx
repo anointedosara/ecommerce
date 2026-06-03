@@ -76,6 +76,7 @@ type StoreValue = {
   user: User | null;
   signUp: (name: string, email: string, password: string) => AuthResult;
   logIn: (email: string, password: string) => AuthResult;
+  signInWithGoogle: (name: string, email: string) => AuthResult;
   logOut: () => void;
   updateProfile: (name: string, email: string) => void;
   // Orders
@@ -308,6 +309,33 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [readUsers, notify],
   );
 
+  // Sign in / up via an OAuth provider (Google). No password — the provider
+  // vouches for the account. Creates the account on first use, else logs in.
+  const signInWithGoogle = useCallback(
+    (name: string, email: string): AuthResult => {
+      const trimmedName = name.trim();
+      const id = email.trim().toLowerCase();
+      if (!trimmedName || !id) {
+        return { ok: false, error: "Could not read your Google account." };
+      }
+      const users = readUsers();
+      const existing = users.find((u) => u.email.toLowerCase() === id);
+      if (!existing) {
+        const stored: StoredUser = {
+          name: trimmedName,
+          email: email.trim(),
+          password: "__google_oauth__",
+        };
+        localStorage.setItem(KEYS.users, JSON.stringify([...users, stored]));
+      }
+      const finalName = existing ? existing.name : trimmedName;
+      setUser({ name: finalName, email: email.trim() });
+      notify(`Welcome, ${finalName}!`);
+      return { ok: true };
+    },
+    [readUsers, notify],
+  );
+
   const logOut = useCallback(() => {
     setUser(null);
     // Cart and wishlist are session-bound — clear them on logout.
@@ -496,6 +524,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       user,
       signUp,
       logIn,
+      signInWithGoogle,
       logOut,
       updateProfile,
       orders: visibleOrders,
@@ -529,6 +558,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       user,
       signUp,
       logIn,
+      signInWithGoogle,
       logOut,
       updateProfile,
       visibleOrders,

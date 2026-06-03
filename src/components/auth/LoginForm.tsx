@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 import { useStore } from "@/lib/store";
 
 const fields = [
@@ -64,6 +65,8 @@ export default function LoginForm() {
           Forget Password?
         </Link>
       </div>
+
+      <GoogleSignInButton label="Sign in with Google" redirect="/account" />
 
       <p className="text-sm text-black/60">
         Don&apos;t have an account?{" "}
