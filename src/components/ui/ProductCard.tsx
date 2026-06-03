@@ -57,9 +57,21 @@ export default function ProductCard({
     toggleWishlist,
     removeFromWishlist,
     isInWishlist,
+    user,
   } = useStore();
   const { t } = useLanguage();
+  const router = useRouter();
   const wished = isInWishlist(product.id);
+
+  // Guests must sign up before they can add to cart or wishlist.
+  const handleAddToCart = () => {
+    if (!user) return router.push("/signup");
+    addToCart(product);
+  };
+  const handleWishlist = () => {
+    if (!user) return router.push("/signup");
+    toggleWishlist(product);
+  };
 
   return (
     <div className="group flex flex-col gap-4">
@@ -108,7 +120,7 @@ export default function ProductCard({
               <IconButton
                 label="Toggle wishlist"
                 active={wished}
-                onClick={() => toggleWishlist(product)}
+                onClick={handleWishlist}
               >
                 <Heart size={18} className={wished ? "fill-current" : ""} />
               </IconButton>
@@ -129,7 +141,7 @@ export default function ProductCard({
         {/* Add to cart — slides up on hover, or stays pinned with a cart icon. */}
         <button
           type="button"
-          onClick={() => addToCart(product)}
+          onClick={handleAddToCart}
           className={`absolute inset-x-0 bottom-0 z-10 flex items-center justify-center gap-2 bg-black py-2.5 text-base font-medium text-white transition-transform duration-300 ${
             cartMode === "hover"
               ? "translate-y-full group-hover:translate-y-0"

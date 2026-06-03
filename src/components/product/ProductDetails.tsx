@@ -15,7 +15,7 @@ export default function ProductDetails({ product }: { product: Product }) {
   const sizes = product.sizes ?? defaultSizes;
 
   const router = useRouter();
-  const { addToCart, toggleWishlist, isInWishlist } = useStore();
+  const { addToCart, toggleWishlist, isInWishlist, user } = useStore();
   const wished = isInWishlist(product.id);
 
   const [activeImage, setActiveImage] = useState(0);
@@ -23,9 +23,15 @@ export default function ProductDetails({ product }: { product: Product }) {
   const [size, setSize] = useState(sizes.includes("M") ? "M" : sizes[0]);
   const [qty, setQty] = useState(2);
 
+  // Guests must sign up before buying or saving to wishlist.
   const buyNow = () => {
+    if (!user) return router.push("/signup");
     addToCart(product, qty, size);
     router.push("/cart");
+  };
+  const handleWishlist = () => {
+    if (!user) return router.push("/signup");
+    toggleWishlist(product);
   };
 
   const description =
@@ -152,7 +158,7 @@ export default function ProductDetails({ product }: { product: Product }) {
           <button
             type="button"
             aria-label="Add to wishlist"
-            onClick={() => toggleWishlist(product)}
+            onClick={handleWishlist}
             className={`flex h-10 w-10 items-center justify-center rounded border transition-colors ${
               wished
                 ? "border-primary bg-primary text-white"
