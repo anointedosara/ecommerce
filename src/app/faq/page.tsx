@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import InfoPage from "@/components/layout/InfoPage";
+import Accordion from "@/components/ui/Accordion";
 
 export const metadata: Metadata = {
   title: "FAQ — Exclusive",
@@ -28,12 +29,7 @@ const faqs = [
 export default function FaqPage() {
   return (
     <InfoPage title="FAQ">
-      {faqs.map((item) => (
-        <div key={item.q} className="flex flex-col gap-2">
-          <h2 className="text-lg font-medium text-black">{item.q}</h2>
-          <p>{item.a}</p>
-        </div>
-      ))}
+      <Accordion items={faqs} />
     </InfoPage>
   );
 }
