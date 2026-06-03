@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { useRouter } from "next/navigation";
 import {
   CircleX,
@@ -17,7 +17,7 @@ const items: { label: string; href: string; Icon: LucideIcon }[] = [
   { label: "Manage My Account", href: "/account", Icon: User },
   { label: "My Order", href: "/account/orders", Icon: ShoppingBag },
   { label: "My Cancellations", href: "/account/cancellations", Icon: CircleX },
-  { label: "My Reviews", href: "/account", Icon: Star },
+  { label: "My Reviews", href: "/account/reviews", Icon: Star },
 ];
 
 export default function AccountMenu() {

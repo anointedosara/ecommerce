@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import ProductCard from "@/components/ui/ProductCard";
 import { justForYou } from "@/lib/data";
 import { useStore } from "@/lib/store";

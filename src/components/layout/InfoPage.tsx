@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 

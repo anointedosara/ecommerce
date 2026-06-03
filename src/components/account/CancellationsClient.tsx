@@ -1,7 +1,32 @@
 "use client";
 
-import Link from "next/link";
+import Image from "next/image";
+import Link from "@/components/ui/Link";
+import type { OrderItem } from "@/lib/store";
 import { useStore } from "@/lib/store";
+import { getProductById } from "@/lib/data";
+
+/** Item thumbnail — uses the stored photo, falling back to a product lookup. */
+function ItemThumb({ item }: { item: OrderItem }) {
+  const image = item.image ?? getProductById(item.id)?.image;
+  return (
+    <span className="flex h-10 w-10 items-center justify-center rounded bg-secondary">
+      {image ? (
+        <Image
+          src={image}
+          alt={item.name}
+          width={32}
+          height={32}
+          className="h-8 w-8 object-contain"
+        />
+      ) : (
+        <span className="text-2xl" aria-hidden>
+          {item.emoji}
+        </span>
+      )}
+    </span>
+  );
+}
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -56,9 +81,7 @@ export default function CancellationsClient() {
                 className="flex items-center justify-between text-sm"
               >
                 <span className="flex items-center gap-3">
-                  <span className="text-2xl" aria-hidden>
-                    {item.emoji}
-                  </span>
+                  <ItemThumb item={item} />
                   {item.name} <span className="text-black/50">× {item.qty}</span>
                 </span>
                 <span>${item.price * item.qty}</span>

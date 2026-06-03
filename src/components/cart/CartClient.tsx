@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useLanguage } from "@/lib/i18n";

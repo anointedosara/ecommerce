@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 
 /** Brand glyphs — lucide removed its social brand icons, so we inline them. */
 export const socialLinks = [

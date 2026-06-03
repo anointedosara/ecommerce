@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { exploreProducts } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CarouselArrows from "@/components/ui/CarouselArrows";

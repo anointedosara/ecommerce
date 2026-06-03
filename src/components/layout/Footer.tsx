@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { QrCode } from "lucide-react";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import NewsletterForm from "./NewsletterForm";

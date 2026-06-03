@@ -31,6 +31,7 @@ export type OrderItem = {
   id: string;
   name: string;
   emoji: string;
+  image?: string;
   price: number;
   qty: number;
 };

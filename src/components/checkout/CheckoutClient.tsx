@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/Link";
 import { Check, CircleCheck } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useLanguage } from "@/lib/i18n";
@@ -168,6 +168,7 @@ export default function CheckoutClient() {
         id: l.product.id,
         name: l.product.name,
         emoji: l.product.emoji,
+        image: l.product.image,
         price: l.product.price,
         qty: l.qty,
       })),
