@@ -61,7 +61,10 @@ export default function LoginForm() {
         >
           Log In
         </button>
-        <Link href="#" className="text-base text-primary hover:underline">
+        <Link
+          href="/forgot-password"
+          className="text-base text-primary hover:underline"
+        >
           Forget Password?
         </Link>
       </div>

@@ -79,6 +79,8 @@ type StoreValue = {
   signInWithGoogle: (name: string, email: string) => AuthResult;
   logOut: () => void;
   updateProfile: (name: string, email: string) => void;
+  accountExists: (email: string) => boolean;
+  resetPassword: (email: string, newPassword: string) => AuthResult;
   // Orders
   orders: Order[];
   placeOrder: (data: {
@@ -368,6 +370,34 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [readUsers, notify],
   );
 
+  const accountExists = useCallback(
+    (email: string) => {
+      const id = email.trim().toLowerCase();
+      return id !== "" && readUsers().some((u) => u.email.toLowerCase() === id);
+    },
+    [readUsers],
+  );
+
+  const resetPassword = useCallback(
+    (email: string, newPassword: string): AuthResult => {
+      const id = email.trim().toLowerCase();
+      if (!id) return { ok: false, error: "Please enter your email." };
+      if (newPassword.length < 4) {
+        return { ok: false, error: "Password must be at least 4 characters." };
+      }
+      const users = readUsers();
+      const idx = users.findIndex((u) => u.email.toLowerCase() === id);
+      if (idx < 0) {
+        return { ok: false, error: "No account found with that email." };
+      }
+      users[idx] = { ...users[idx], password: newPassword };
+      localStorage.setItem(KEYS.users, JSON.stringify(users));
+      notify("Password updated. You can now log in.");
+      return { ok: true };
+    },
+    [readUsers, notify],
+  );
+
   // Owner key for per-user account data ("guest" when signed out).
   const owner = user?.email.toLowerCase() ?? "guest";
 
@@ -539,6 +569,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       signInWithGoogle,
       logOut,
       updateProfile,
+      accountExists,
+      resetPassword,
       orders: visibleOrders,
       placeOrder,
       cancelOrder,
@@ -573,6 +605,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       signInWithGoogle,
       logOut,
       updateProfile,
+      accountExists,
+      resetPassword,
       visibleOrders,
       placeOrder,
       cancelOrder,

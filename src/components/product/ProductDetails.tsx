@@ -56,14 +56,14 @@ export default function ProductDetails({ product }: { product: Product }) {
     <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_400px] lg:gap-16">
       {/* Gallery */}
       <div className="flex flex-col-reverse gap-4 sm:flex-row">
-        <div className="flex gap-4 sm:flex-col">
+        <div className="no-scrollbar flex gap-4 overflow-x-auto sm:flex-col sm:overflow-visible">
           {variants.map((v, i) => (
             <button
               key={i}
               type="button"
               onClick={() => setVariant(i)}
               aria-label={`Colour variant ${i + 1}`}
-              className={`relative flex h-[110px] w-full min-w-[120px] items-center justify-center rounded bg-secondary text-4xl transition-shadow sm:w-[170px] ${
+              className={`relative flex h-20 w-20 shrink-0 items-center justify-center rounded bg-secondary text-3xl transition-shadow sm:h-[110px] sm:w-[170px] sm:text-4xl ${
                 variant === i ? "ring-2 ring-primary" : ""
               }`}
             >
@@ -84,19 +84,19 @@ export default function ProductDetails({ product }: { product: Product }) {
             </button>
           ))}
         </div>
-        <div className="relative flex flex-1 items-center justify-center rounded bg-secondary p-8">
+        <div className="relative flex flex-1 items-center justify-center rounded bg-secondary p-6 sm:p-8">
           {product.image ? (
             <Image
               src={product.image}
               alt={product.name}
               width={510}
               height={330}
-              className="h-[330px] w-auto max-w-[510px] object-contain transition-[filter] duration-300"
+              className="h-60 w-auto max-w-full object-contain transition-[filter] duration-300 sm:h-[330px] sm:max-w-[510px]"
               style={{ filter: activeFilter }}
             />
           ) : (
             <span
-              className="select-none text-[200px]"
+              className="select-none text-[140px] sm:text-[200px]"
               aria-hidden
               style={{ filter: activeFilter }}
             >
@@ -166,7 +166,7 @@ export default function ProductDetails({ product }: { product: Product }) {
         </div>
 
         {/* Quantity + buy */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-stretch overflow-hidden rounded border border-black/40">
             <button
               type="button"
@@ -192,7 +192,7 @@ export default function ProductDetails({ product }: { product: Product }) {
           <button
             type="button"
             onClick={buyNow}
-            className="rounded bg-primary px-10 py-2.5 text-base font-medium text-white transition-colors hover:bg-primary-hover"
+            className="flex-1 rounded bg-primary px-8 py-2.5 text-base font-medium text-white transition-colors hover:bg-primary-hover sm:flex-none sm:px-10"
           >
             Buy Now
           </button>
