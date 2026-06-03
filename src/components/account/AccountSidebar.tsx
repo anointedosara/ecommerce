@@ -39,7 +39,6 @@ export default function AccountSidebar({ active }: { active?: string }) {
         <div key={group.title} className="flex flex-col gap-3">
           <Link
             href={group.titleHref ?? "#"}
-            scroll={false}
             className="font-medium text-black"
           >
             {group.title}
@@ -48,7 +47,6 @@ export default function AccountSidebar({ active }: { active?: string }) {
             <Link
               key={link.label}
               href={link.href}
-              scroll={false}
               className={`pl-8 transition-colors hover:text-primary ${
                 link.label === active ? "text-primary" : "text-black/50"
               }`}
