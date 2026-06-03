@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { useStore } from "@/lib/store";
@@ -68,10 +69,21 @@ export default function CartClient() {
               <div className="relative">
                 <Link
                   href={`/product/${line.product.id}`}
-                  className="select-none text-3xl"
-                  aria-hidden
+                  className="flex h-12 w-12 items-center justify-center"
                 >
-                  {line.product.emoji}
+                  {line.product.image ? (
+                    <Image
+                      src={line.product.image}
+                      alt={line.product.name}
+                      width={48}
+                      height={48}
+                      className="h-12 w-12 select-none object-contain"
+                    />
+                  ) : (
+                    <span className="select-none text-3xl" aria-hidden>
+                      {line.product.emoji}
+                    </span>
+                  )}
                 </Link>
                 <button
                   type="button"

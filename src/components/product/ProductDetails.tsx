@@ -8,21 +8,34 @@ import type { Product } from "@/lib/data";
 import { useStore } from "@/lib/store";
 import Rating from "@/components/ui/Rating";
 
-const defaultColors = ["#a0bce0", "#db4444"];
 const defaultSizes = ["XS", "S", "M", "L", "XL"];
 
+// CSS tints used to fake colour variants from a single product photo.
+const variantFilters = [
+  "none",
+  "hue-rotate(320deg) saturate(1.5)",
+  "hue-rotate(200deg) saturate(1.4)",
+  "hue-rotate(90deg) saturate(1.3)",
+];
+const palette = ["#2b2b2b", "#db4444", "#2563eb", "#16a34a"];
+
 export default function ProductDetails({ product }: { product: Product }) {
-  const colors = product.colors ?? defaultColors;
   const sizes = product.sizes ?? defaultSizes;
+
+  // One colour variant per swatch — the product's own colours come first,
+  // padded from a default palette so there are always a few to choose from.
+  const variants = [...(product.colors ?? []), ...palette]
+    .slice(0, 4)
+    .map((swatch, i) => ({ swatch, filter: variantFilters[i] }));
 
   const router = useRouter();
   const { addToCart, toggleWishlist, isInWishlist, user } = useStore();
   const wished = isInWishlist(product.id);
 
-  const [activeImage, setActiveImage] = useState(0);
-  const [color, setColor] = useState(0);
+  const [variant, setVariant] = useState(0);
   const [size, setSize] = useState(sizes.includes("M") ? "M" : sizes[0]);
   const [qty, setQty] = useState(2);
+  const activeFilter = variants[variant]?.filter ?? "none";
 
   // Guests must sign up before buying or saving to wishlist.
   const buyNow = () => {
@@ -44,41 +57,49 @@ export default function ProductDetails({ product }: { product: Product }) {
       {/* Gallery */}
       <div className="flex flex-col-reverse gap-4 sm:flex-row">
         <div className="flex gap-4 sm:flex-col">
-          {[0, 1, 2, 3].map((i) => (
+          {variants.map((v, i) => (
             <button
               key={i}
               type="button"
-              onClick={() => setActiveImage(i)}
-              aria-label={`View image ${i + 1}`}
+              onClick={() => setVariant(i)}
+              aria-label={`Colour variant ${i + 1}`}
               className={`relative flex h-[110px] w-full min-w-[120px] items-center justify-center rounded bg-secondary text-4xl transition-shadow sm:w-[170px] ${
-                activeImage === i ? "ring-2 ring-primary" : ""
+                variant === i ? "ring-2 ring-primary" : ""
               }`}
             >
               {product.image ? (
                 <Image
                   src={product.image}
-                  alt={product.name}
+                  alt={`${product.name} variant ${i + 1}`}
                   fill
                   sizes="170px"
                   className="object-contain p-4"
+                  style={{ filter: v.filter }}
                 />
               ) : (
-                <span aria-hidden>{product.emoji}</span>
+                <span aria-hidden style={{ filter: v.filter }}>
+                  {product.emoji}
+                </span>
               )}
             </button>
           ))}
         </div>
-        <div className="relative flex flex-1 items-center justify-center rounded bg-secondary py-16">
+        <div className="relative flex min-h-[500px] flex-1 items-center justify-center rounded bg-secondary p-8 lg:min-h-[600px]">
           {product.image ? (
             <Image
               src={product.image}
               alt={product.name}
-              width={420}
-              height={420}
-              className="max-h-[360px] w-auto object-contain"
+              width={600}
+              height={600}
+              className="max-h-[520px] w-auto object-contain transition-[filter] duration-300"
+              style={{ filter: activeFilter }}
             />
           ) : (
-            <span className="select-none text-[160px]" aria-hidden>
+            <span
+              className="select-none text-[260px]"
+              aria-hidden
+              style={{ filter: activeFilter }}
+            >
               {product.emoji}
             </span>
           )}
@@ -108,16 +129,16 @@ export default function ProductDetails({ product }: { product: Product }) {
         <div className="flex items-center gap-6">
           <span className="text-xl">Colours:</span>
           <div className="flex items-center gap-2">
-            {colors.map((c, i) => (
+            {variants.map((v, i) => (
               <button
-                key={c}
+                key={i}
                 type="button"
                 aria-label={`Colour ${i + 1}`}
-                onClick={() => setColor(i)}
+                onClick={() => setVariant(i)}
                 className={`h-5 w-5 rounded-full ${
-                  color === i ? "ring-2 ring-black ring-offset-2" : ""
+                  variant === i ? "ring-2 ring-black ring-offset-2" : ""
                 }`}
-                style={{ backgroundColor: c }}
+                style={{ backgroundColor: v.swatch }}
               />
             ))}
           </div>

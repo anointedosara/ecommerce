@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Star } from "lucide-react";
 import { useStore } from "@/lib/store";
 import Rating from "@/components/ui/Rating";
@@ -53,6 +52,7 @@ export default function ProductReviews({ productId }: { productId: string }) {
 
   const [rating, setRating] = useState(5);
   const [text, setText] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const average =
@@ -62,9 +62,10 @@ export default function ProductReviews({ productId }: { productId: string }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const result = addReview(productId, rating, text);
+    const result = addReview(productId, rating, text, name);
     if (result.ok) {
       setText("");
+      setName("");
       setRating(5);
       setError(null);
     } else {
@@ -116,36 +117,42 @@ export default function ProductReviews({ productId }: { productId: string }) {
         {/* Write a review */}
         <div className="h-fit rounded border border-black/10 p-6 shadow-[0_1px_13px_rgba(0,0,0,0.04)]">
           <h3 className="text-lg font-medium">Write a Review</h3>
-          {user ? (
-            <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <span className="text-sm">Your rating</span>
-                <StarPicker value={rating} onChange={setRating} />
-              </div>
-              <textarea
-                value={text}
+          <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <span className="text-sm">Your rating</span>
+              <StarPicker value={rating} onChange={setRating} />
+            </div>
+            {!user && (
+              <input
+                value={name}
                 onChange={(e) => {
-                  setText(e.target.value);
+                  setName(e.target.value);
                   if (error) setError(null);
                 }}
-                placeholder="Share your thoughts about this product…"
-                className="min-h-[120px] resize-none rounded bg-secondary px-4 py-3 text-sm placeholder:text-black/40 focus:outline-none"
+                placeholder="Your name"
+                className="rounded bg-secondary px-4 py-3 text-sm placeholder:text-black/40 focus:outline-none"
               />
-              {error && <p className="text-sm text-primary">{error}</p>}
-              <button
-                type="submit"
-                className="rounded bg-primary px-8 py-3 text-base font-medium text-white transition-colors hover:bg-primary-hover"
-              >
-                Submit Review
-              </button>
-            </form>
-          ) : (
-            <p className="mt-4 text-sm text-black/60">
-              Please{" "}
-              <Link href="/login" className="font-medium text-primary underline">
-                log in
-              </Link>{" "}
-              to write a review.
+            )}
+            <textarea
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+                if (error) setError(null);
+              }}
+              placeholder="Share your thoughts about this product…"
+              className="min-h-[120px] resize-none rounded bg-secondary px-4 py-3 text-sm placeholder:text-black/40 focus:outline-none"
+            />
+            {error && <p className="text-sm text-primary">{error}</p>}
+            <button
+              type="submit"
+              className="rounded bg-primary px-8 py-3 text-base font-medium text-white transition-colors hover:bg-primary-hover"
+            >
+              Submit Review
+            </button>
+          </form>
+          {user && (
+            <p className="mt-3 text-xs text-black/50">
+              Posting as <span className="font-medium">{user.name}</span>
             </p>
           )}
         </div>

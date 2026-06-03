@@ -99,7 +99,12 @@ type StoreValue = {
   removePayment: (method: string) => void;
   // Reviews
   reviews: Review[];
-  addReview: (productId: string, rating: number, text: string) => AuthResult;
+  addReview: (
+    productId: string,
+    rating: number,
+    text: string,
+    author?: string,
+  ) => AuthResult;
   getReviews: (productId: string) => Review[];
 };
 
@@ -466,14 +471,21 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   );
 
   // --- Reviews ---
+  // Anyone can review: logged-in users review as themselves, guests provide a name.
   const addReview = useCallback(
-    (productId: string, rating: number, text: string): AuthResult => {
-      if (!user) return { ok: false, error: "Please log in to write a review." };
+    (
+      productId: string,
+      rating: number,
+      text: string,
+      author?: string,
+    ): AuthResult => {
+      const name = (user?.name ?? author ?? "").trim();
+      if (!name) return { ok: false, error: "Please enter your name." };
       if (!text.trim()) return { ok: false, error: "Please write your review." };
       const review: Review = {
         id: uid("REV"),
         productId,
-        author: user.name,
+        author: name,
         rating,
         text: text.trim(),
         date: new Date().toISOString(),
